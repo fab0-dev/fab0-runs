@@ -1,0 +1,31 @@
+step: spec
+attempt: 1
+executor: agent
+actor: eugenefurs
+branch: fab0/50/spec
+model: opus
+base:
+  branch: fab0/50/base
+  sha: 2846a350d937c73fa596fd621e53752daa17f1f2
+inputs:
+  intent: sha256:59c21315b9add0e28027d47e2a868c2235ac48fe97921d6926565cd4dc102d1e
+  reviews: sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945
+gate:
+  type: human
+summary: 'The spec covers how `apply` handles a branch whose GitHub copy already has
+  every local commit: it brings the local branch forward under D42 and pushes nothing,
+  and it pushes only when the local branch has commits GitHub lacks. Its eight scenarios
+  cover run and unit branches, a local branch ahead, equal commits, a diverged branch
+  (which still fails), a clean checkout, a checkout with changes, and a repository
+  with no origin. T1 fixes the single shared push in fab0-core''s `plugins/fab0/lib/fab0_engine/git.py`
+  and tests it in a new `tests/test_push.py`. T2, which depends on T1, updates `docs/explanation/branching.md`
+  in docs. Both files are in /Users/zhen/Work/Fab0/fab0/.git/fab0/out/50/spec-1/ (spec.md,
+  tasks.yaml).'
+outputs:
+  spec: sha256:7b75c198b401f41e25a2bcc1e21428a938cc7ee72ee6e00d8e3994e2a4a800e5
+  tasks: sha256:5dd900d1fd0d4d9eac4d1af090e13beceeb0eb2971b8bace58cdc80f23a9a47d
+verify:
+  spec: pass
+  tasks: pass
+started: '2026-10-17T19:05:15Z'
+ended: '2026-10-17T19:06:44Z'
