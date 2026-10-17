@@ -1,0 +1,14 @@
+- id: T1
+  title: apply brings a branch forward to GitHub's instead of pushing it when GitHub already has it all
+  repo: core
+  files:
+    - plugins/fab0/lib/fab0_engine/git.py
+    - tests/test_push.py
+  scenarios: [S1, S2, S3, S4, S5, S6, S7, S8]
+- id: T2
+  title: The branches explanation says apply goes on when GitHub's branch is ahead
+  repo: docs
+  files:
+    - docs/explanation/branching.md
+  depends_on: [T1]
+  scenarios: [S1, S2, S5]
