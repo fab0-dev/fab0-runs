@@ -1,0 +1,36 @@
+step: implement
+attempt: 2
+executor: agent
+actor: eugenefurs
+branch: fab0/50/implement-T1
+unit: T1
+model: sonnet
+base:
+  branch: fab0/50/base
+  sha: e5d1b425b65bed7425d74904a06bcb15e292351f
+inputs:
+  spec: sha256:7b75c198b401f41e25a2bcc1e21428a938cc7ee72ee6e00d8e3994e2a4a800e5
+  tasks: sha256:5dd900d1fd0d4d9eac4d1af090e13beceeb0eb2971b8bace58cdc80f23a9a47d
+  unit: sha256:4919d7b661bb9073c5c9e8e230cffd842c3473096f4d023bfe67f8a8791bd1f8
+  reviews: sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945
+rework:
+- rejected
+claims:
+- core:plugins/fab0/lib/fab0_engine/git.py
+- core:tests/test_push.py
+gate:
+  type: auto
+summary: 'Rework done, only tests/test_push.py changed. Ran `uv run ruff check --fix`,
+  which resolved the I001 import-order error. Strengthened S7: the test now stages
+  a new file before the push and asserts the `git diff --cached --name-status` output
+  is unchanged, along with HEAD, the edited file and the status. `uv run ruff check`
+  passes. `ruff format --check` passes on tests/test_push.py. `uv run pytest tests/test_push.py`
+  gives 7 passed. An earlier full-suite run, made before I corrected the S7 status
+  assertion, gave 398 passed, 1 xfailed and 1 failed. The failure was the S7 test,
+  which I have since fixed. I did not rerun the full suite after the fix. git.py is
+  unchanged from attempt 1. I did not add an end-to-end test through apply; the review
+  marked that as minor and non-blocking.'
+started: '2026-10-17T19:18:03Z'
+ended: '2026-10-17T19:21:01Z'
+heads:
+  core: bd77bb03efa54f9077c2225da4963cc87e9d12c9
