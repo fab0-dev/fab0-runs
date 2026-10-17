@@ -1,0 +1,36 @@
+step: implement
+attempt: 1
+executor: agent
+actor: eugenefurs
+branch: fab0/50/implement-T1
+unit: T1
+model: sonnet
+base:
+  branch: fab0/50/base
+  sha: e5d1b425b65bed7425d74904a06bcb15e292351f
+inputs:
+  spec: sha256:7b75c198b401f41e25a2bcc1e21428a938cc7ee72ee6e00d8e3994e2a4a800e5
+  tasks: sha256:5dd900d1fd0d4d9eac4d1af090e13beceeb0eb2971b8bace58cdc80f23a9a47d
+  unit: sha256:4919d7b661bb9073c5c9e8e230cffd842c3473096f4d023bfe67f8a8791bd1f8
+  reviews: sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945
+claims:
+- core:plugins/fab0/lib/fab0_engine/git.py
+- core:tests/test_push.py
+gate:
+  type: auto
+summary: 'Writer.push in plugins/fab0/lib/fab0_engine/git.py now compares the local
+  branch with origin/<branch> (no network call). Same commit: nothing is pushed. Local
+  is an ancestor of origin''s: the local branch is brought forward with the existing
+  set_branch (update-ref when not checked out, ff-only merge in a clean checkout)
+  and nothing is pushed. If the checkout has changes, the branch is left where it
+  was and apply goes on. Otherwise it pushes as before, so a diverged branch is refused
+  by GitHub. The push error now reads ''git push of <branch> failed in <repo>: ...'',
+  naming both. No origin remote: no-op. No force push anywhere. Added tests/test_push.py
+  with 7 tests covering S1/S2 (one test), S3, S4, S5, S6, S7, S8, using a bare origin
+  and a second clone. Ran `uv run pytest tests/test_push.py` (7 passed) and the full
+  suite `uv run pytest tests` (399 passed, 1 xfailed). Not touched: caller code and
+  docs (T2 does the docs).'
+started: '2026-10-17T19:11:40Z'
+ended: '2026-10-17T19:14:21Z'
+heads:
+  core: a31aa87724e18f5b5baead89107e69f55a5ce961
