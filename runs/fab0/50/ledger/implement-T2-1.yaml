@@ -1,0 +1,31 @@
+step: implement
+attempt: 1
+executor: agent
+actor: eugenefurs
+branch: fab0/50/implement-T2
+unit: T2
+model: sonnet
+base:
+  branch: fab0/50/base
+  sha: a86b1099e5c97e867cec5f534c6e809053f7fb76
+inputs:
+  spec: sha256:7b75c198b401f41e25a2bcc1e21428a938cc7ee72ee6e00d8e3994e2a4a800e5
+  tasks: sha256:5dd900d1fd0d4d9eac4d1af090e13beceeb0eb2971b8bace58cdc80f23a9a47d
+  unit: sha256:830c2b31eef148c496a8aa2426a9d7e9350ae8d7113cf548c382cb61f43c7a4c
+  reviews: sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945
+claims:
+- docs:docs/explanation/branching.md
+gate:
+  type: auto
+summary: 'Added a section ''When GitHub''s branch is ahead'' to docs/explanation/branching.md,
+  after ''No force pushes, ever''. It covers S1 and S2: when GitHub''s copy contains
+  all of the local run or unit branch, apply doesn''t push, brings the local branch
+  forward and goes on. It states the limits: the decision uses the fetched origin
+  ref, and a checkout with changes is left alone. It also covers S5: a diverged branch
+  still fails, naming the repository and branch, and neither side moves. No tests,
+  and no commands run: this is a docs-only change and I didn''t run the docs build
+  or link check.'
+started: '2026-10-17T19:30:14Z'
+ended: '2026-10-17T19:31:01Z'
+heads:
+  docs: 4e3c5d3afdfc56a5e51266d5c5f0a475d23631da
