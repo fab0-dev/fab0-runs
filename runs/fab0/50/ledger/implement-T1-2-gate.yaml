@@ -1,0 +1,62 @@
+step: implement
+attempt: 2
+executor: agent
+actor: eugenefurs
+branch: fab0/50/implement-T1
+base:
+  branch: fab0/50/base
+  sha: e5d1b425b65bed7425d74904a06bcb15e292351f
+unit: T1
+model: opus
+gate:
+  type: auto
+  merge: auto
+  into: fab0/50/base
+  agent: reviewer
+  decision: approve
+summary: 'Writer.push in plugins/fab0/lib/fab0_engine/git.py now compares the local
+  branch with origin/<branch> and makes no network call. If they are at the same commit
+  it does nothing (S4). If the local branch is behind and GitHub has all of it, the
+  local branch is moved forward with the existing set_branch and nothing is pushed:
+  update-ref when the branch isn''t checked out, an ff-only merge in a clean checkout
+  (S1, S2, S6). If that checkout has changes, nothing moves (S7). In every other case
+  it pushes as before (S3), with no force push. A rejected push raises Fail naming
+  the repository and the branch (S5). With no origin it does nothing (S8). This matches
+  the spec''s decisions and D42.; Every push in apply.py, handout.py and the Writer''s
+  own merge, commit and create_branch goes through this one function, as the spec''s
+  first decision asks.; Only the task''s two files changed (git diff --name-only:
+  plugins/fab0/lib/fab0_engine/git.py, tests/test_push.py).; Checks in the implement-T1
+  worktree: `uv run ruff check` passes, `uv run ruff format --check` passes, and `uv
+  run pytest tests -q` gives 399 passed, 1 xfailed. The producer hadn''t rerun the
+  full suite after the fix; this run covers it.'
+verdict:
+  decision: approve
+  reasons:
+  - 'Writer.push in plugins/fab0/lib/fab0_engine/git.py now compares the local branch
+    with origin/<branch> and makes no network call. If they are at the same commit
+    it does nothing (S4). If the local branch is behind and GitHub has all of it,
+    the local branch is moved forward with the existing set_branch and nothing is
+    pushed: update-ref when the branch isn''t checked out, an ff-only merge in a clean
+    checkout (S1, S2, S6). If that checkout has changes, nothing moves (S7). In every
+    other case it pushes as before (S3), with no force push. A rejected push raises
+    Fail naming the repository and the branch (S5). With no origin it does nothing
+    (S8). This matches the spec''s decisions and D42.'
+  - Every push in apply.py, handout.py and the Writer's own merge, commit and create_branch
+    goes through this one function, as the spec's first decision asks.
+  - 'Only the task''s two files changed (git diff --name-only: plugins/fab0/lib/fab0_engine/git.py,
+    tests/test_push.py).'
+  - 'Checks in the implement-T1 worktree: `uv run ruff check` passes, `uv run ruff
+    format --check` passes, and `uv run pytest tests -q` gives 399 passed, 1 xfailed.
+    The producer hadn''t rerun the full suite after the fix; this run covers it.'
+  findings:
+  - check: Scenarios
+    message: S1 and S2 are tested only through Writer.push directly; no test drives
+      apply opening the run's or a unit's pull request, so the wiring is checked by
+      reading apply.py:158, 223 and 247, not by a test.
+    location: tests/test_push.py:49
+  - check: Scenarios
+    message: The S7 test checks HEAD but not refs/heads/feat on its own; this holds
+      only because feat is the checked-out branch.
+    location: tests/test_push.py:93
+started: '2026-10-17T19:21:20Z'
+ended: '2026-10-17T19:23:53Z'
