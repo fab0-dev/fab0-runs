@@ -1,0 +1,59 @@
+step: implement
+attempt: 1
+executor: agent
+actor: eugenefurs
+branch: fab0/50/implement-T1
+base:
+  branch: fab0/50/base
+  sha: e5d1b425b65bed7425d74904a06bcb15e292351f
+unit: T1
+model: opus
+gate:
+  type: auto
+  merge: auto
+  into: fab0/50/base
+  agent: reviewer
+  decision: reject
+summary: 'The project''s CI lint step (`uv run ruff check`, .github/workflows/test.yml:15,
+  and the repo''s CLAUDE.md) fails on the new test file: I001, the import block is
+  unsorted. The producer can fix this.; Everything else passes. Writer.push is the
+  one push that every apply caller goes through (apply.py:158, 223, 247 and handout.py:642).
+  It uses origin/<branch> without a network call. When local is behind origin it brings
+  local forward with the existing D42-safe set_branch, and when the checkout is dirty
+  it leaves the branch alone. It never force-pushes, and the push error now names
+  both the repository and the branch. Only the task''s two files changed. `uv run
+  pytest -q tests` gives 399 passed and 1 xfailed, and `ruff format --check` passes
+  on both files.'
+verdict:
+  decision: reject
+  reasons:
+  - 'The project''s CI lint step (`uv run ruff check`, .github/workflows/test.yml:15,
+    and the repo''s CLAUDE.md) fails on the new test file: I001, the import block
+    is unsorted. The producer can fix this.'
+  - Everything else passes. Writer.push is the one push that every apply caller goes
+    through (apply.py:158, 223, 247 and handout.py:642). It uses origin/<branch> without
+    a network call. When local is behind origin it brings local forward with the existing
+    D42-safe set_branch, and when the checkout is dirty it leaves the branch alone.
+    It never force-pushes, and the push error now names both the repository and the
+    branch. Only the task's two files changed. `uv run pytest -q tests` gives 399
+    passed and 1 xfailed, and `ruff format --check` passes on both files.
+  findings:
+  - check: Tests and checks
+    message: '`uv run ruff check` fails with I001 (import block is unsorted or unformatted)
+      in the new test file, so CI''s lint step would fail; ruff wants `from conftest
+      import git` grouped with the third-party imports, with no blank line after `import
+      pytest`. `uv run ruff check --fix` resolves it.'
+    location: tests/test_push.py:3
+  - check: Scenarios
+    message: 'Minor, not blocking: S1 and S2 are tested only at the Writer.push level,
+      not through apply opening the run''s or the unit''s pull request. That is acceptable
+      under the spec''s decision to fix this in the one shared push function, but
+      no test shows apply going on end to end.'
+    location: tests/test_push.py:51
+  - check: Quality
+    message: 'Minor, not blocking: S7 asks for the index to stay unchanged, but the
+      test checks it only indirectly, through `git status --porcelain` showing an
+      unstaged modification. No test stages a change and then checks it.'
+    location: tests/test_push.py:93
+started: '2026-10-17T19:14:44Z'
+ended: '2026-10-17T19:17:42Z'
