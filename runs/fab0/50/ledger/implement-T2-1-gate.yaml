@@ -1,0 +1,52 @@
+step: implement
+attempt: 1
+executor: agent
+actor: eugenefurs
+branch: fab0/50/implement-T2
+base:
+  branch: fab0/50/base
+  sha: a86b1099e5c97e867cec5f534c6e809053f7fb76
+unit: T2
+model: opus
+gate:
+  type: auto
+  merge: auto
+  into: fab0/50/base
+  agent: reviewer
+  decision: approve
+summary: 'The change touches only docs/explanation/branching.md, which is the task''s
+  one file.; The new section ''When GitHub''s branch is ahead'' covers S1 and S2.
+  When GitHub''s copy holds every commit of the local run or unit branch, apply doesn''t
+  push, brings the local branch forward and goes on. It also covers S5: a diverged
+  branch still stops the run with an error that names the repository and the branch,
+  and neither side moves.; The text matches T1''s Writer.push on core''s run branch
+  (fab0/50/base, plugins/fab0/lib/fab0_engine/git.py:158-178) and the spec. It compares
+  with the fetched origin/<branch> ref, makes no network call, leaves a checkout with
+  changes alone and lets apply go on, and never force-pushes. Nothing out of scope
+  is described.; All three checks from the docs'' CONTRIBUTING.md pass in the worktree.
+  pymarkdownlnt and codespell were run on the changed page and pass; check-reference.py
+  passes (''every field of 6 pages matches its schema'').'
+verdict:
+  decision: approve
+  reasons:
+  - The change touches only docs/explanation/branching.md, which is the task's one
+    file.
+  - 'The new section ''When GitHub''s branch is ahead'' covers S1 and S2. When GitHub''s
+    copy holds every commit of the local run or unit branch, apply doesn''t push,
+    brings the local branch forward and goes on. It also covers S5: a diverged branch
+    still stops the run with an error that names the repository and the branch, and
+    neither side moves.'
+  - The text matches T1's Writer.push on core's run branch (fab0/50/base, plugins/fab0/lib/fab0_engine/git.py:158-178)
+    and the spec. It compares with the fetched origin/<branch> ref, makes no network
+    call, leaves a checkout with changes alone and lets apply go on, and never force-pushes.
+    Nothing out of scope is described.
+  - All three checks from the docs' CONTRIBUTING.md pass in the worktree. pymarkdownlnt
+    and codespell were run on the changed page and pass; check-reference.py passes
+    ('every field of 6 pages matches its schema').
+  findings:
+  - check: tests and checks
+    message: The lychee link check, which CI runs, was not run because lychee isn't
+      installed here; the change adds no links, so the risk is low.
+    location: docs/explanation/branching.md:43
+started: '2026-10-17T19:31:34Z'
+ended: '2026-10-17T19:32:36Z'
