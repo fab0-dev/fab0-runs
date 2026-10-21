@@ -1,0 +1,22 @@
+- id: T1
+  title: The story check sets up a 0.10 workspace, validates it and opens the run on the fake tracker
+  repo: examples
+  files: [scripts/check-agents.py]
+  scenarios: [S1, S2, S3, S21, S22]
+- id: T2
+  title: The story check acts as the product owner and judges the finished run from the tracker and the repositories
+  repo: examples
+  files: [scripts/check-agents.py]
+  depends_on: [T1]
+  scenarios: [S4, S5, S6, S7, S8, S9, S10, S11, S12]
+- id: T3
+  title: The feature check drives the composition's 0.10 runs, its people's acts included, and judges their outcome
+  repo: examples
+  files: [scripts/check-agents.py]
+  depends_on: [T2]
+  scenarios: [S2, S11, S12, S13, S14, S15, S16, S17, S18, S19, S20, S21, S22, S23]
+- id: T4
+  title: The README's Develop section and CLAUDE.md's Checks section give the check's command line for both examples and say what it checks
+  repo: examples
+  files: [README.md, CLAUDE.md]
+  scenarios: [S23]
